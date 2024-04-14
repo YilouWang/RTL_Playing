@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1713133730" />
+    <testcase name="AluTest" classname="testbench" file="/home/yilou/Desktop/yilou_github/RTL_Playing/Asyn_Fifo/py_tb/env/lib/python3.10/site-packages/pyuvm/extension_classes.py" lineno="190" time="0.0628499984741211" sim_time_ns="987.001" ratio_time="15704.073571400391" />
+  </testsuite>
+</testsuites>
