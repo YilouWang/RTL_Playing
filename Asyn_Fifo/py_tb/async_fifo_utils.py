@@ -149,8 +149,8 @@ class Async_fifo_Bfm(metaclass=utility_classes.Singleton):
             await FallingEdge(self.dut.r_clk)
             r_en = get_int(self.dut.r_en)
             if r_en == 1:
-                result = get_int(self.dut.r_data)
-                self.result_mon_queue.put_nowait(result)
+                result_tuple = (get_int(self.dut.r_data), get_int(self.dut.w_full), get_int(self.dut.r_empty))
+                self.result_mon_queue.put_nowait(result_tuple)
 
     async def wait_w_clk_cycles(self, n):
         await(ClockCycles(self.dut.w_clk, n, True))
