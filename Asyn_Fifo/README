@@ -1,0 +1,3 @@
+Async FiFo Design and Verification Toy Project:
+  1. Async FiFo Design using SystemVerilog, simulated with Verilator using a simple C++ testbench.
+  2. Async FiFo Verification using Pyuvm-Cocotb, simulated with Verilator using python testbench.
