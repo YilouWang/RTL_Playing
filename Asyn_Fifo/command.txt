@@ -1,0 +1,6 @@
+scl enable gcc-toolset-12 bash
+gcc --version
+cd ~
+source .bashrc
+export VERILATOR_ROOT=/home/yilou/Desktop/OSVISE/verilator
+echo $VERILATOR_ROOT

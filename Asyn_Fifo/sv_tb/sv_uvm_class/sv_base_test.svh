@@ -23,6 +23,7 @@ class fifo_base_test extends uvm_test;
         uvm_report_server svr;
         super.report_phase(phase);
         svr = uvm_report_server::get_server();
+        // svr.set_id_action_hier("uvm_component_name_constraint", UVM_NO_ACTION);
         if (svr.get_severity_count(UVM_FATAL) + svr.get_severity_count(UVM_ERROR)>0) begin
             `uvm_info(get_type_name(), "---------------------------", UVM_NONE)
             `uvm_info(get_type_name(), "-----    Test Fail!   -----", UVM_NONE)

@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+
 
 module async_fifo #(
     parameter DATA_SIZE = 8,

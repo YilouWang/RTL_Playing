@@ -37,10 +37,11 @@ task fifo_scoreboard::run_phase(uvm_phase phase);
         while(1) begin
             wait(expected_queue.size() > 0);
             get_expect = expected_queue.pop_front();
-
+            `uvm_info("fifo_scb", "Get a expect result.", UVM_LOW);
+            $display(get_expect);
             if(!act_fifo.try_get(get_actual))
                 `uvm_error("act_fifo", "Missing input w_data.");
-            
+            get_actual.print();
             result = get_actual.compare(get_expect);
             if(result) begin
                 `uvm_info("fifo_scb", "Compare Successfully.", UVM_LOW);

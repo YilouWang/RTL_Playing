@@ -4,20 +4,28 @@ all: simulate
 # Testbench setup
 # -------------------------------------
 VERILATOR := verilator
+ifdef VERILATOR_ROOT
+VERILATOR := $(VERILATOR_ROOT)/bin/verilator
+endif
 
-UVM_ROOT ?=../../verilator-verification-features-tests/uvm
+.PHONY: verilator-version
+verilator-version:
+	@echo "Running $(VERILATOR) --version"
+	@$(VERILATOR) --version
+
+UVM_ROOT ?=../../../uvm/uvm-verilator
 UVM_TEST ?= case0_test
 
-VERILOG_DEFINE_FILES = ${UVM_ROOT}/src/uvm.sv ./sv_fifo_pkg.sv ./sv_fifo_interface.sv ./sv_tb_top.sv ../DUT/async_fifo.sv
+VERILOG_DEFINE_FILES = ${UVM_ROOT}/src/uvm.sv ./sv_fifo_pkg.sv ./sv_fifo_interface.sv ./sv_tb_top.sv ../DUT/simple_demo_tb.sv ../DUT/async_fifo.sv ../DUT/empty_checker.sv ../DUT/fifo_mem.sv ../DUT/full_checker.sv ../DUT/sync_2ff.sv
 VERILOG_INCLUDE_DIRS = ../DUT . ./sv_uvm_class ${UVM_ROOT}/src
 
-SV_PATHS := ../DUT . ./sv_uvm_class
-SV_FILES := $(foreach path,$(SV_PATHS),$(wildcard $(path)/*.sv))
+SV_PATHS := ../DUT ../sv_tb ./sv_uvm_class
+SV_FILES := $(foreach path,$(SV_PATHS),$(wildcard $(path)/*svh) $(wildcard $(path)/*svh))
 
 # -------------------------------------
 # Compilation/simulation configuration
 # -------------------------------------
-SIM_NAME ?= async_fifo
+SIM_NAME ?= simple_demo_tb
 SIM_DIR := $(SIM_NAME)-sim
 COMPILE_ARGS += -DUVM_NO_DPI
 COMPILE_ARGS += --prefix $(SIM_NAME) -o $(SIM_NAME)
@@ -35,7 +43,7 @@ WARNING_ARGS += -Wno-lint \
 # Make UVM test with Verilator
 # -------------------------------------
 $(SIM_DIR)/$(SIM_NAME).mk: $(SV_FILES)
-	$(VERILATOR) --cc --exe --main --timing -Mdir $(SIM_DIR) \
+	$(VERILATOR) --cc --exe --main --trace --trace-structs --timing -Mdir $(SIM_DIR) \
 	${COMPILE_ARGS} ${EXTRA_ARGS} \
 	${VERILOG_DEFINE_FILES} \
 	${WARNING_ARGS}
@@ -44,12 +52,13 @@ $(SIM_DIR)/$(SIM_NAME): $(SIM_DIR)/$(SIM_NAME).mk
 	$(MAKE) -j${NPROC} -C $(SIM_DIR) $(BUILD_ARGS) -f $(SIM_NAME).mk
 
 simulate: $(SIM_DIR)/$(SIM_NAME).mk $(SIM_DIR)/$(SIM_NAME)
-	$(SIM_DIR)/$(SIM_NAME) +UVM_TESTNAME=$(UVM_TEST)
+	$(SIM_DIR)/$(SIM_NAME) +UVM_TESTNAME=$(UVM_TEST) +ntb_random_seed=2345
 
 clean:
 	rm -rf simv*.daidir csrc
 	rm -rf csrc* simv*
 	rm -rf $(SIM_DIR)
+	rm -rf dump.vcd
 
 
 .PHONY: simulate clean

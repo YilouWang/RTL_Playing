@@ -17,21 +17,27 @@ task case0_sequence::body();
     // obtain an instance of the sequencer through p_sequencer
     r_sequencer r_seqr = p_sequencer.r_seqr;
     w_sequencer w_seqr = p_sequencer.w_seqr;
-    r_sequence r_seq; // = new();
-    w_sequence w_seq; // = new();
-    repeat(7) begin
+    r_sequence r_seq = new();
+    w_sequence w_seq = new();
+    
+    `uvm_info("case0", "7 W_sequence enable", UVM_MEDIUM)
+    repeat(20) begin
         if(!w_seq.randomize()) `uvm_error("RAND", "FAILED");
         w_seq.start(w_seqr);
         //`uvm_do_on(w_seq, p_sequencer.w_seqr)
     end
-    `uvm_info("case0", "Sent 7 done", UVM_MEDIUM)
+    `uvm_info("case0", "7 W_sequence done", UVM_MEDIUM)
+
+    `uvm_info("case0", "7 R_sequence enable", UVM_MEDIUM)
+    /*
     repeat(7) begin
         if(!r_seq.randomize()) `uvm_error("RAND", "FAILED");
         r_seq.start(r_seqr);
         //`uvm_do_on(r_seq, p_sequencer.r_seqr)
     end
-    `uvm_info("case0", "Get 7 done", UVM_MEDIUM)
-    /*
+    `uvm_info("case0", "7 R_sequence done", UVM_MEDIUM)
+    
+    
     repeat(3) begin
         `uvm_do_on(w_seq, p_sequencer.w_seqr)
     end
@@ -41,8 +47,8 @@ task case0_sequence::body();
     end
     `uvm_info("case0", "Get 3 done", UVM_MEDIUM)
     */
-    #3000;
-    `uvm_info("case0", "Body Finished", UVM_MEDIUM)
+    //#3000;
+    //`uvm_info("case0", "Body Finished", UVM_MEDIUM)
 endtask
 
 task case0_sequence::pre_body();

@@ -31,6 +31,7 @@ class r_monitor extends uvm_monitor;
         end
 
         tr.data = rif.data;
+        // $display("%dns : r_monitor::monitor:: rdata %2h and send to scb", $time, tr.data);
         @(posedge rif.clk);
 
     endtask
@@ -67,8 +68,9 @@ class w_monitor extends uvm_monitor;
             @(posedge wif.clk);
             if(wif.en) break;
         end
-
+        
         tr.data = wif.data;
+        // $display("%dns : w_monitor::monitor:: wdata %2h and send to scb", $time, tr.data);
         @(posedge wif.clk);
 
     endtask
