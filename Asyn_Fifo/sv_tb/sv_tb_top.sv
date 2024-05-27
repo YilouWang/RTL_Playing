@@ -4,11 +4,9 @@ module sv_tb_top;
 
     import uvm_pkg::*;
 
-    import async_fifo_pkg::*;
+    import sv_fifo_pkg::*;
     `include "uvm_macros.svh"
 
-    //waveform_init wf_init();
-    int seed;
     bit w_clk, r_clk;
     bit w_reset, r_reset;
 
@@ -17,19 +15,19 @@ module sv_tb_top;
     always #7 r_clk = ~r_clk;
 
     initial begin
-        w_reset = 1;
-        #5 w_reset = 0;
+        w_reset = 0;
+        #10 w_reset = 1;
     end
 
     initial begin
-        r_reset = 1;
-        #7 r_reset = 0;
+        r_reset = 0;
+        #15 r_reset = 1;
     end
 
     fifo_w_if wif(w_clk, w_reset);
     fifo_r_if rif(r_clk, r_reset);
 
-    simple_demo_tb dut(
+    simple_demo_tb simple_demo_tb(
         .w_clk(wif.clk),
         .w_rst(wif.reset),
         .w_data(wif.data),
@@ -49,33 +47,22 @@ module sv_tb_top;
     end
 
     initial begin
-        if(!$value$plusargs("ntb_random_seed=%d", seed)) begin
-            seed = 12345;
-        end
-        uvm_config_db#(int)::set(null, "uvm_test_top", "seed", seed);
-        $dumpfile("new.vcd");
+        $dumpfile("dump.vcd");
         $dumpvars(0, sv_tb_top);
+        $dumpvars(0, simple_demo_tb);
         run_test();
     end
-
+    /*
     always @(posedge wif.clk) begin
-        $display("%2dns : top.wif.data = %2h, top.dut.w_data = %2h",$time, wif.data, dut.w_data);
-        $display("%2dns : top.wif.en = %2h, top.dut.w_en = %2h",$time, wif.en, dut.w_en);
-        $display("%2dns : top.wif.full = %2h, top.dut.w_full = %2h",$time, wif.full, dut.w_full);
+        $display("%2dns : top.wif.data = %2h, top.dut.w_data = %2h",$time, wif.data, demo_tb.w_data);
+        $display("%2dns : top.wif.en = %2h, top.dut.w_en = %2h",$time, wif.en, demo_tb.w_en);
+        $display("%2dns : top.wif.full = %2h, top.dut.w_full = %2h",$time, wif.full, demo_tb.w_full);
     end
 
     always @(posedge rif.clk) begin
-        $display("%2dns : top.rif.data = %2h, top.dut.r_data = %2h",$time, rif.data, dut.r_data);
-        $display("%2dns : top.rif.en = %2h, top.dut.r_en = %2h",$time, rif.en, dut.r_en);
-        $display("%2dns : top.rif.empty = %2h, top.dut.r_empty = %2h",$time, rif.empty, dut.r_empty);
+        $display("%2dns : top.rif.data = %2h, top.dut.r_data = %2h",$time, rif.data, demo_tb.r_data);
+        $display("%2dns : top.rif.en = %2h, top.dut.r_en = %2h",$time, rif.en, demo_tb.r_en);
+        $display("%2dns : top.rif.empty = %2h, top.dut.r_empty = %2h",$time, rif.empty, demo_tb.r_empty);
     end
+    */
 endmodule
-/*
-module waveform_init();
-    initial begin
-        $dumpfile("dump.vcd");
-        $dumpvars(0, top.wif);
-        $dumpvars(0, top.rif);
-    end
-endmodule
-*/

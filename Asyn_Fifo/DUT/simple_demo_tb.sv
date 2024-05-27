@@ -1,11 +1,9 @@
-`timescale 1ns/1ps
-
 
 module simple_demo_tb(
     input logic w_clk, w_rst, w_en,
     input logic r_clk, r_rst, r_en,
-    input logic [DATA_SIZE-1 : 0] w_data,
-    output logic [DATA_SIZE-1 : 0] r_data,
+    input logic [7 : 0] w_data,
+    output logic [7 : 0] r_data,
     output logic w_full, r_empty
 );
     

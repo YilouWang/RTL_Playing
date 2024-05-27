@@ -34,7 +34,7 @@ class r_agent extends uvm_agent;
     r_driver drv;
     r_monitor mon;
 
-    uvm_analysis_port #(r_sequence_item) ap;
+    uvm_analysis_port #(w_sequence_item) ap;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);

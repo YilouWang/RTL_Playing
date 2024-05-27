@@ -1,5 +1,5 @@
 VERILATOR = verilator
-VERILATOR_FLAGS = -Wall --cc --trace -Wno-UNUSED
+VERILATOR_FLAGS = -Wall --cc --trace -Wno-UNUSED -Wno-EOFNEWLINE -Wno-LATCH
 #--prof-cfuncs -CFLAGS -DVL_DEBUG
 
 TOP_MODULE = simple_demo_tb
@@ -15,3 +15,4 @@ $(SIM_TARGET): $(VERILOG_SOURCES) $(TOP_MODULE).cpp
 
 clean:
 	rm -rf obj_dir
+	rm -f output.vcd

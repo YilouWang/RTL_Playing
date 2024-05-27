@@ -13,19 +13,20 @@ verilator-version:
 	@echo "Running $(VERILATOR) --version"
 	@$(VERILATOR) --version
 
-UVM_ROOT ?=../../../uvm/uvm-verilator
-UVM_TEST ?= case0_test
+UVM_ROOT ?= /home/yilou/Desktop/OSVISE/uvm/uvm-verilator
 
-VERILOG_DEFINE_FILES = ${UVM_ROOT}/src/uvm.sv ./sv_fifo_pkg.sv ./sv_fifo_interface.sv ./sv_tb_top.sv ../DUT/simple_demo_tb.sv ../DUT/async_fifo.sv ../DUT/empty_checker.sv ../DUT/fifo_mem.sv ../DUT/full_checker.sv ../DUT/sync_2ff.sv
-VERILOG_INCLUDE_DIRS = ../DUT . ./sv_uvm_class ${UVM_ROOT}/src
+# UVM_TEST ?= case0_test
 
-SV_PATHS := ../DUT ../sv_tb ./sv_uvm_class
+VERILOG_DEFINE_FILES = ${UVM_ROOT}/src/uvm.sv ../af_pkg.sv ../af_bfm.sv ../top.sv ../../DUT/async_fifo.sv ../../DUT/empty_checker.sv ../../DUT/fifo_mem.sv ../../DUT/full_checker.sv ../../DUT/sync_2ff.sv
+VERILOG_INCLUDE_DIRS = ${UVM_ROOT}/src ../../DUT ../. ../uvm_class
+
+SV_PATHS := ../../DUT ../. ../uvm_class
 SV_FILES := $(foreach path,$(SV_PATHS),$(wildcard $(path)/*svh) $(wildcard $(path)/*svh))
 
 # -------------------------------------
 # Compilation/simulation configuration
 # -------------------------------------
-SIM_NAME ?= simple_demo_tb
+SIM_NAME ?= top
 SIM_DIR := $(SIM_NAME)-sim
 COMPILE_ARGS += -DUVM_NO_DPI
 COMPILE_ARGS += --prefix $(SIM_NAME) -o $(SIM_NAME)
@@ -52,7 +53,8 @@ $(SIM_DIR)/$(SIM_NAME): $(SIM_DIR)/$(SIM_NAME).mk
 	$(MAKE) -j${NPROC} -C $(SIM_DIR) $(BUILD_ARGS) -f $(SIM_NAME).mk
 
 simulate: $(SIM_DIR)/$(SIM_NAME).mk $(SIM_DIR)/$(SIM_NAME)
-	$(SIM_DIR)/$(SIM_NAME) +UVM_TESTNAME=$(UVM_TEST) +ntb_random_seed=2345
+	$(SIM_DIR)/$(SIM_NAME)
+#+UVM_TESTNAME=$(UVM_TEST) +ntb_random_seed=2345
 
 clean:
 	rm -rf simv*.daidir csrc

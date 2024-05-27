@@ -41,12 +41,12 @@ int main(int argc, char** argv) {
             w_clk = !w_clk;
             top->w_clk = w_clk;
             if (w_clk) {  // Perform write operations at positive edge of w_clk
-                if (rand() % 2 == 0) {  // Randomly perform write operations
+                //if (rand() % 2 == 0) {  // Randomly perform write operations
                     top->w_en = 1;
                     top->w_data = rand() % 256;
-                } else {
-                    top->w_en = 0;
-                }
+                //} else {
+                //    top->w_en = 0;
+                //}
             }
         }
 
@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
             r_clk = !r_clk;
             top->r_clk = r_clk;
             if (r_clk) {  // Perform read operations at positive edge of r_clk
-                top->r_en = (rand() % 4 == 0);  // Randomly enable read
+                // top->r_en = (rand() % 4 == 0);  // Randomly enable read
             }
         }
 

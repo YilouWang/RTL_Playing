@@ -1,14 +1,14 @@
 class fifo_scoreboard extends uvm_scoreboard;
 
-    r_sequence_item expected_queue[$];
-    uvm_analysis_imp #(r_sequence_item, fifo_scoreboard) exp_export;
+    w_sequence_item expected_queue[$];
+    uvm_analysis_imp #(w_sequence_item, fifo_scoreboard) exp_export;
     uvm_tlm_analysis_fifo #(w_sequence_item) act_fifo;
     `uvm_component_utils(fifo_scoreboard)
 
     extern function new(string name, uvm_component parent = null);
     extern virtual function void build_phase(uvm_phase phase);
     extern virtual task run_phase(uvm_phase phase);
-    extern virtual function void write(r_sequence_item tr);
+    extern virtual function void write(w_sequence_item tr);
 
 endclass
 
@@ -22,14 +22,14 @@ function void fifo_scoreboard::build_phase(uvm_phase phase);
     act_fifo = new("act_fifo", this);
 endfunction
 
-function void fifo_scoreboard::write(r_sequence_item tr);
+function void fifo_scoreboard::write(w_sequence_item tr);
     tr.print();
     expected_queue.push_back(tr);
 endfunction
 
 task fifo_scoreboard::run_phase(uvm_phase phase);
     w_sequence_item get_actual;
-    r_sequence_item get_expect;
+    w_sequence_item get_expect;
     bit result;
 
     super.run_phase(phase);

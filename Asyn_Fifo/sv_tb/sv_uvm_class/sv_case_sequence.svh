@@ -17,38 +17,58 @@ task case0_sequence::body();
     // obtain an instance of the sequencer through p_sequencer
     r_sequencer r_seqr = p_sequencer.r_seqr;
     w_sequencer w_seqr = p_sequencer.w_seqr;
-    r_sequence r_seq = new();
-    w_sequence w_seq = new();
-    
-    `uvm_info("case0", "7 W_sequence enable", UVM_MEDIUM)
-    repeat(20) begin
-        if(!w_seq.randomize()) `uvm_error("RAND", "FAILED");
-        w_seq.start(w_seqr);
-        //`uvm_do_on(w_seq, p_sequencer.w_seqr)
-    end
-    `uvm_info("case0", "7 W_sequence done", UVM_MEDIUM)
+    r_sequence r_seq;
+    w_sequence w_seq;
+    `ifdef VERILATOR
+    //fork
+        //begin
+            // w_sequence w_seq_local = w_seq;
+            `uvm_info("case0", "Write 8.", UVM_MEDIUM)
+            repeat(10) begin
+                w_seq = w_sequence::type_id::create("w_seq");
+                if(!w_seq.randomize()) `uvm_error("RAND", "FAILED");
+                w_seq.start(w_seqr);
+                //w_seq.start(p_sequencer.w_seqr);
+            end
+        //end
 
-    `uvm_info("case0", "7 R_sequence enable", UVM_MEDIUM)
-    /*
-    repeat(7) begin
+        //begin
+            `uvm_info("case0", "Read 8.", UVM_MEDIUM)
+            repeat(10) begin
+                r_seq = r_sequence::type_id::create("r_seq");
+                if(!r_seq.randomize()) `uvm_error("RAND", "FAILED");
+                r_seq.start(p_sequencer.r_seqr);
+            end
+        //end
+    //join_none
+    `else
+    `uvm_info("case0", "Write 8 and Read 8.", UVM_MEDIUM)
+    // /*
+    repeat(8) begin
+        w_seq = w_sequence::type_id::create("w_seq");
+        if(!w_seq.randomize()) `uvm_error("RAND", "FAILED");
+        w_seq.start(p_sequencer.w_seqr);
+    end
+    repeat(8) begin
+        r_seq = r_sequence::type_id::create("r_seq");
         if(!r_seq.randomize()) `uvm_error("RAND", "FAILED");
-        r_seq.start(r_seqr);
-        //`uvm_do_on(r_seq, p_sequencer.r_seqr)
+            r_seq.start(r_seqr);
     end
-    `uvm_info("case0", "7 R_sequence done", UVM_MEDIUM)
-    
-    
-    repeat(3) begin
-        `uvm_do_on(w_seq, p_sequencer.w_seqr)
-    end
-    `uvm_info("case0", "Sent 3 done", UVM_MEDIUM)
-    repeat(3) begin
-        `uvm_do_on(r_seq, p_sequencer.r_seqr)
-    end
-    `uvm_info("case0", "Get 3 done", UVM_MEDIUM)
-    */
-    //#3000;
-    //`uvm_info("case0", "Body Finished", UVM_MEDIUM)
+    // */
+    `uvm_info("case0", "Concurrently Write and Read.", UVM_MEDIUM)
+    fork
+        begin
+        repeat(200) `uvm_do_on(w_seq, p_sequencer.w_seqr)
+        end
+
+        begin
+        repeat(200) `uvm_do_on(r_seq, p_sequencer.r_seqr)
+        end
+    join_none
+    `endif
+
+    #20000ns;
+    `uvm_info("case0", "Body Finished", UVM_MEDIUM)
 endtask
 
 task case0_sequence::pre_body();

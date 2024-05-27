@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+// `timescale 1ns/1ps
 module fifo_mem #(
     parameter ADDR_SIZE = 4,
     parameter DATA_SIZE = 8

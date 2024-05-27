@@ -1,4 +1,4 @@
-package async_fifo_pkg;
+package sv_fifo_pkg;
 
     import uvm_pkg::*;
     `include "uvm_macros.svh"
