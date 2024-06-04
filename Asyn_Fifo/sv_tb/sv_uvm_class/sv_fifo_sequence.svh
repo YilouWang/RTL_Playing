@@ -13,14 +13,16 @@ endclass
 
 task r_sequence::body();
     r_sequence_item r_tr;
-    //`uvm_do(r_tr)
+    `uvm_do(r_tr)
+    /*
     r_tr = new("r_tr");
     start_item(r_tr);
     if(!r_tr.randomize()) begin
         `uvm_error("RANDOMIZE_FAILED", "In r_sequence.")
     end
+    */
     // $display("%dns : r_sequence:: rdata with a delay %2d and en %2h and send to w_drv", $time, r_tr.delay, r_tr.en);
-    finish_item(r_tr);
+    //finish_item(r_tr);
 endtask
 
 task r_sequence::pre_body();

@@ -26,8 +26,9 @@ task case0_sequence::body();
             `uvm_info("case0", "Write 8.", UVM_MEDIUM)
             repeat(10) begin
                 w_seq = w_sequence::type_id::create("w_seq");
-                if(!w_seq.randomize()) `uvm_error("RAND", "FAILED");
-                w_seq.start(w_seqr);
+                `uvm_do(w_seq, w_seqr)
+                //if(!w_seq.randomize()) `uvm_error("RAND", "FAILED");
+                //w_seq.start(w_seqr);
                 //w_seq.start(p_sequencer.w_seqr);
             end
         //end
