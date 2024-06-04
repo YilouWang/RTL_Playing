@@ -23,7 +23,7 @@ function void fifo_scoreboard::build_phase(uvm_phase phase);
 endfunction
 
 function void fifo_scoreboard::write(w_sequence_item tr);
-    tr.print();
+    //tr.print();
     expected_queue.push_back(tr);
 endfunction
 

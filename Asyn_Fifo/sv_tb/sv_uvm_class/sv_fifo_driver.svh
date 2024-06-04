@@ -42,7 +42,10 @@ class w_driver extends uvm_driver #(w_sequence_item);
         @(posedge wif.clk);
         // Debug Use
         `uvm_info("W_Seq", $sformatf("w_driver receives wdata %2h with a delay %2d from W_seqr.", push.data, push.delay), UVM_LOW);
+        $display("push.cls_1_:");
+        $display(push.cls_1_);
 
+        // push.print();
         while (1) begin
             if (wif.full == 1'b1) begin
                 wif.en <= 1'b0;
@@ -60,7 +63,7 @@ class w_driver extends uvm_driver #(w_sequence_item);
         end
         
         push.delay = push.delay % 2;
-        `uvm_info("w_driver", $sformatf("w_driver::push:: wdata %2h with a delay %2d", push.data, push.delay), UVM_LOW);
+        // `uvm_info("w_driver", $sformatf("w_driver::push:: wdata %2h with a delay %2d", push.data, push.delay), UVM_LOW);
         
         @(posedge wif.clk);
         wif.en <= 1'b0;
@@ -119,6 +122,8 @@ class r_driver extends uvm_driver #(r_sequence_item);
         @(posedge rif.clk);
         // Debug Use
         `uvm_info("R_Seq", $sformatf("r_driver receives rdata with a delay %2d, with a en %2h from r_seqr.", pop.delay, pop.en), UVM_LOW);
+
+        `uvm_info("R_Seq", $sformatf("Randmization DEBUG USE: r_data = %2h.", pop.data), UVM_LOW);
 
         while (1) begin
             if (rif.empty == 1'b1) begin

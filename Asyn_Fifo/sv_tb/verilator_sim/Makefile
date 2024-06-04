@@ -13,6 +13,7 @@ verilator-version:
 	@echo "Running $(VERILATOR) --version"
 	@$(VERILATOR) --version
 
+CMD = $(pwd)
 UVM_ROOT ?=/home/yilou/Desktop/OSVISE/uvm/uvm-verilator
 
 UVM_TEST ?= case0_test
@@ -38,7 +39,10 @@ WARNING_ARGS += -Wno-lint \
 	-Wno-IGNOREDRETURN \
 	-Wno-CONSTRAINTIGN \
 	-Wno-ZERODLY
-
+ifeq ($(json_dump),1)
+	EXTRA_ARGS += -dump-tree-json
+else
+endif
 
 # -------------------------------------
 # Make UVM test with Verilator
