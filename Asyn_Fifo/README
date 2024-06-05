@@ -1,3 +1,30 @@
-Async FiFo Design and Verification Toy Project:
-  1. Async FiFo Design using SystemVerilog, simulated with Verilator using a simple C++ testbench.
-  2. Async FiFo Verification using Pyuvm-Cocotb, simulated with Verilator using python testbench.
+##########################
+##  Developed by PlanV  ##
+##########################
+
+An Async FiFo Design and Verification Demo of PLANV in Munich to explore enabling UVM in verilator
+
+Asyn_Fifo/
+│
+├── README.md
+├── DUT/                        # Async_fifo Design and Verilator simulation demo with C++ testbench.
+│
+├── sv_tb                       # A classical verification testbench framework from Qiang Zhang's book
+    ├── sv_uvm_class/           # UVM class (uvm_components, uvm_sequence, uvm_sequnce_item, test_case)
+    ├── vsim_sim/               # vsim simulation folder
+    └── verilator_sim/          # verilator simulation folder
+    └── sv_fifo_interface.sv    # interface class
+    └── sv_fifo_pkg.sv          # pkg imports all class from sv_uvm_class/
+    └── sv_tb_top.sv
+│
+├── uvm_tb                      # A classcial verification testbench framework from Ray Salami's book
+    ├── uvm_class/
+    ├── vsim_sim/
+    ├── verilator_sim/ 
+    ├── af_bfm.sv
+    ├── af_pkg.sv
+    ├── top.sv
+├── pytb                        # The same tb framework with the one in uvm_tb. Using pyuvm as methodology and veriltaor as simulator.
+    ├── async_fifo_utils.py     # py_bfm
+    ├── testbench.py            # pyuvm testbench
+    └── Makefile
