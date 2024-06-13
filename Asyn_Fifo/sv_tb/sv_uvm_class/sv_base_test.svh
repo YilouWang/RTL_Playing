@@ -29,6 +29,9 @@ class fifo_base_test extends uvm_test;
     function void report_phase(uvm_phase phase);
         uvm_report_server svr;
         super.report_phase(phase);
+        // For Riscv Summit
+        generate_report();
+        // For Riscv Summit
         svr = uvm_report_server::get_server();
         if (svr.get_severity_count(UVM_FATAL) + svr.get_severity_count(UVM_ERROR)>0) begin
             `uvm_info(get_type_name(), "---------------------------", UVM_NONE)
@@ -40,6 +43,20 @@ class fifo_base_test extends uvm_test;
             `uvm_info(get_type_name(), "-----    Test Pass!   -----", UVM_NONE)
             `uvm_info(get_type_name(), "---------------------------", UVM_NONE)
         end
+    endfunction
+
+    function void generate_report();
+        string report;
+        report = "Company: PlanV\n";
+        report = {report, "Project: OSVISE\n"};
+        report = {report, "Current Status: Simple UVM testbench running in Verilator\n"};
+        report = {report, "Objectives: Develop UVM-based testbench for ISAX core extensions RTL verification and extend Verilator for UVM simulation\n"};
+        report = {report, "We are eager to connect and share knowledge with interested parties. Feel free to reach out and engage with us for more insights and discussions.\n"};
+
+        $display("***************************");
+        $display("Project Report:");
+        $display("%s", report);
+        $display("***************************");
     endfunction
 
 endclass : fifo_base_test
