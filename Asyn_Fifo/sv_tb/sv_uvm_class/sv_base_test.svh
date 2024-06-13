@@ -51,7 +51,7 @@ class fifo_base_test extends uvm_test;
         report = {report, "Project: OSVISE\n"};
         report = {report, "Current Status: Simple UVM testbench running in Verilator\n"};
         report = {report, "Objectives: Develop UVM-based testbench for ISAX core extensions RTL verification and extend Verilator for UVM simulation\n"};
-        report = {report, "We are eager to connect and share knowledge with interested parties. Feel free to reach out and engage with us for more insights and discussions.\n"};
+        report = {report, "\nWe are eager to connect and share knowledge with interested parties. Feel free to reach out and engage with us for more insights and discussions."};
 
         $display("***************************");
         $display("Project Report:");
